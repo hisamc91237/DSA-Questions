@@ -1,0 +1,91 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node{
+  int data;
+  Node next;
+  Node(int data){
+    this.data = data;
+    this.next = null;
+  }
+}
+
+class LinkedList{
+  Node head;
+  void add(int data){
+    Node new_node = new Node(data);
+    if(head == null){
+      head = new_node;
+      return;
+    }
+    Node curr = head;
+    while(curr.next!=null){
+      curr = curr.next;
+    }
+    curr.next = new_node;
+  }
+}
+public class Main
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+
+	
+	Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        LinkedList ll = new LinkedList();
+
+      for(int i =0;i<n;i++){
+        int x = sc.nextInt();
+        ll.add(x);
+      }
+
+      if(k==1 || k==n){
+        Node next1 = ll.head;
+        Node prev2 = ll.head;
+        for(int i= 1;i<n-1;i++){
+          prev2 = prev2.next;
+        }
+        Node next2 = prev2.next;
+        Node temp = next1.next;
+
+        // swapping nodes
+        next2.next = temp;
+        next1.next = null;
+        ll.head = next2;
+        
+      }
+        // in between
+      else{
+            Node prev1 = ll.head;
+          for(int i = 1;i<k-1;i++){
+            prev1 = prev1.next;
+          }
+        
+        Node next1 = prev1.next;
+        Node prev2 = ll.head;
+        for(int i = 1;i<n-k;i++){
+          prev2 = prev2.next;
+        }
+        Node next2 = prev2.next;
+        
+      // same like c = a , a = b, b = c;
+        Node temp = prev1.next;
+        prev1.next = prev2.next;
+        prev2.next = temp;
+
+        // same like c = a , a = b, b = c;
+        temp = next1.next;
+        next1.next = next2.next;
+        next2.next = temp;
+      }
+      Node curr = ll.head;
+      while(curr!=null){
+        System.out.print(curr.data+" ");
+        curr = curr.next;
+      }
+      
+	}
+}

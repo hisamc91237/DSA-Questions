@@ -1,0 +1,35 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+public class Main
+{
+
+    public static int isTriangular(int n){
+      int s = 1;
+      int e = 15;
+      int mid;
+      while(s <= e){
+      mid = s + (e-s)/2;
+        // n(n+1)/2 .... sum of n natural numbers***
+      if((mid*(mid+1)/2) == n){
+        return 1;
+      }
+        if((mid*(mid+1)/2) < n){
+          s = mid + 1;
+        }
+        else{
+          e = mid -1;
+        }
+      }
+      return 0;
+    }
+	public static void main (String[] args) throws java.lang.Exception
+	{
+      	Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        System.out.print(isTriangular(n));
+        
+	}
+}

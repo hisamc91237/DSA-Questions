@@ -1,0 +1,35 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+public class Main
+{
+
+    public static long Root(long n){
+      long s = 0;
+      long e = n -1;
+      long ans = -1;
+      while(s<=e){
+        long mid = s + (e-s)/2;
+        if(mid*mid == n){
+          ans = mid;
+          return ans;
+        }
+        if(mid*mid < n){
+          ans = mid;
+          s = mid + 1;
+        }
+        else{
+          e = mid - 1;
+        }
+      }
+      return ans;
+    }
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		Scanner sc = new Scanner(System.in);
+        long n = sc.nextInt();
+
+        System.out.print(Root(n));
+	}
+}

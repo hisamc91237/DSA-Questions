@@ -1,0 +1,73 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node{
+  int data ;
+  Node next;
+  Node prev ;
+  Node(int data){
+    this.data = data;
+    next = null;
+    prev = null;
+  }
+}
+
+class LinkedList{
+  Node head ;
+
+  void addHead(int data){
+    Node temp = head;
+  Node last = temp.prev;
+
+  head = new Node(data);
+  head.next = temp;
+  head.prev = temp.prev;
+  temp.prev = head;
+  last.next = head;
+}
+
+void add(int data){
+    Node new_node = new Node(data);
+    if(head == null){
+      head = new_node;
+      head.prev = head.next = head;
+      return;
+    }
+
+    if(head.prev == head){
+      new_node.next = new_node.prev=head;
+      head.next = head.prev=new_node;
+      return;
+    }
+
+    Node secLast = head.prev;
+    new_node.next = head;
+    new_node.prev = secLast;
+    secLast.next = new_node;
+    head.prev = new_node;
+}
+}
+
+public class Main
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		Scanner sc = new Scanner(System.in);
+        int n= sc.nextInt();
+        int k = sc.nextInt();
+
+        LinkedList ll = new LinkedList();
+
+      for(int i =0;i<n;i++)
+        ll.add(sc.nextInt()); 
+
+      ll.addHead(k);
+
+      Node curr = ll.head;
+      do{
+        System.out.print(curr.data+" ");
+        curr = curr.next;
+      }while(curr!=ll.head);
+	}
+}

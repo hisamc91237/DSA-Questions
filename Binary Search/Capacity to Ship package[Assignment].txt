@@ -1,0 +1,75 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+ 
+class Main {
+  public static boolean Check(int[] A, long mid, int B){
+ 
+    int day=1;
+    long s=0;
+    for(int i=0;i<A.length;i++){
+      s+=A[i];
+      if(s>mid){
+        day++;
+        s=A[i];
+      }
+    }
+ 
+    if(day<=B){
+      return true;
+    }
+    return false;
+    
+  }
+ 
+ 
+ 
+ 
+  
+  public static long solve(int[] A, int B){
+    int max=-1;
+    long totalWeight=0;
+    int N=A.length;
+    // find max element, as well as sum of all elements
+    for(int i=0;i<N;i++){
+      max=Math.max(max,A[i]);
+      totalWeight+=A[i];
+    }
+ 
+    long start=max;
+    long end=totalWeight;
+    long idx=-1;
+ 
+    while(start<=end){
+      long mid=start+(end-start)/2;
+ 
+      if(Check(A,mid,B)){
+        idx=mid;
+        end=mid-1;
+      }
+ 
+      else{
+        start=mid+1;
+      }
+      
+    }
+    return idx;
+ 
+    
+  }
+ 
+  
+  public static void main (String[] args){
+    
+    Scanner sc = new Scanner(System.in);
+    int n=sc.nextInt();
+    int[] A=new int[n];
+    for(int i=0;i<n;i++){
+      A[i]=sc.nextInt();
+    }
+    int B=sc.nextInt();
+    System.out.println( solve(A,B) );
+ 
+        
+        }
+}

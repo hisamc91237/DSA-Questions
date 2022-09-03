@@ -1,0 +1,76 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node{
+  int data;
+  Node next;
+  Node(int data){
+    this.data = data;
+    this.next = null;
+  }
+}
+
+class LinkedList{
+  Node head;  
+  void add(int data){
+    Node new_node = new Node(data);
+    new_node.next = head;
+    head = new_node;
+  }
+
+  void display(){
+    Node curr = head;
+    while(curr!=null){
+      System.out.print(curr.data+" ");
+      curr = curr.next;
+    }
+  }
+  
+}
+
+public class Main
+{
+    public static Node Reverse(Node head){
+      Node curr = head;
+      Node prev = null;
+      Node next = null;
+      while(curr != null){
+        next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+      }
+      return prev;
+    }
+  
+  public static void combine(Node head,LinkedList ll){
+    int carry = 1;
+    while(head != null){
+      int ans = head.data + carry;
+      carry = ans/10;
+      ans = ans%10;
+      ll.add(ans);
+      head = head.next;
+    }
+    if(carry == 1)
+      ll.add(1);
+  }
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        LinkedList ll = new LinkedList();
+
+        while(n!=0){
+          int digit = n%10;
+          ll.add(digit);
+          n  = n / 10;
+        }
+      ll.head = Reverse(ll.head);
+    LinkedList ans = new LinkedList();
+      combine(ll.head,ans);
+
+      ans.display();
+	}
+}

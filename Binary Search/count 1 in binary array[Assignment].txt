@@ -1,0 +1,33 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+public class Main
+{
+    static int Count(int arr[],int start,int end){
+    
+      int count = 0;
+     while(start<=end){
+       int mid = (start + end)/2;
+        if(arr[mid]==1){
+        count = mid + 1;
+        start = mid + 1;
+      }
+      else{
+       end = mid - 1;
+      }
+     }
+      return count;
+    }
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int []arr = new int[n];
+        for(int i =0;i<n;i++){
+          arr[i] = sc.nextInt();
+        }
+      int ans = Count(arr,0,n-1);
+      System.out.println(ans);
+	}
+}

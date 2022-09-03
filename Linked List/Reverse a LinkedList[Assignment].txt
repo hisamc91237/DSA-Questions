@@ -1,0 +1,62 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Node{
+  int data;
+  Node next;
+  Node(int data){
+    this.data = data;
+    this.next = null;
+  }
+}
+
+class LinkedList{
+  Node head;
+  
+  void add(int data){
+  Node new_node = new Node(data);
+  if(head == null){
+  head = new_node;
+    return;
+  }
+Node curr = head;
+
+while(curr.next!= null)
+  curr = curr.next;
+  curr.next = new_node;
+
+}
+}
+
+public class Main
+{
+    public static Node Reverse(Node head){
+      Node curr = head;
+      Node prev = null;
+      Node next = null;
+      while(curr!=null){
+        next = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = next;
+      }
+      return prev;
+    }
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		Scanner sx = new Scanner(System.in);
+        int n = sx.nextInt();
+      LinkedList ll = new LinkedList();
+        for(int i=0;i<n;i++){
+          int x = sx.nextInt();
+          ll.add(x);
+        }
+        ll.head = Reverse(ll.head);
+        Node curr = ll.head;
+        while(curr != null){
+          System.out.print(curr.data+" ");
+          curr = curr.next;
+        }
+	}
+}

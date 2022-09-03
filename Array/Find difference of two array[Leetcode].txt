@@ -1,0 +1,71 @@
+class Solution {
+public:
+    vector<vector<int>> findDifference(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> v1;
+        vector<int> v2;
+        vector<int> v3;
+        vector<int> v4;
+        vector<vector<int>> ans;
+        
+        for(int i = 0;i<nums1.size();i++){
+            bool flag = false;
+            for(int j=0;j<nums2.size();j++){
+                if(nums1[i] != nums2[j])
+                    continue;
+                else{
+                    flag = true;
+                    break;    
+                }
+                    
+            }
+            if(flag == false ){
+                v1.push_back(nums1[i]);
+            }
+        
+        }
+        for(int i = 0;i<nums2.size();i++){
+            bool flag = false;
+            for(int j=0;j<nums1.size();j++){
+                if(nums2[i] != nums1[j])
+                    continue;
+                else{
+                    flag = true;
+                    break;    
+                }
+                    
+            }
+            if(flag == false ){
+                v2.push_back(nums2[i]);
+            }
+        
+        }
+        for(int i =0;i<v1.size();i++){
+            int flag = 1;
+            for(int j = 0;j<i;j++){
+                if(v1[j] == v1[i])
+                //v3.push_back(v1[i]);
+                    flag = 0;
+                break;
+            }
+            if(flag)
+                v3.push_back(v1[i]);
+        }
+         for(int i =0;i<v2.size();i++){
+            int flag = 1;
+            for(int j = 0;j<i;j++){
+                if(v2[j] == v2[i])
+                //v3.push_back(v1[i]);
+                    flag = 0;
+                break;
+            }
+            if(flag)
+                v4.push_back(v2[i]);
+        }
+        // for(int i =0;i<v1.size();i++){
+        //     cout<<v1[i];
+        // }
+        ans.push_back(v3);
+        ans.push_back(v4);
+        return ans;
+    }
+};
