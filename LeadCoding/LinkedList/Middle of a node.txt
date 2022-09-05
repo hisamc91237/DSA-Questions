@@ -1,0 +1,70 @@
+876. Middle of the Linked List
+
+Given the head of a singly linked list, return the middle node of the linked list.
+If there are two middle nodes, return the second middle node
+
+Input: head = [1,2,3,4,5]
+Output: [3,4,5]
+Explanation: The middle node of the list is node 3.
+
+APPROACH 1:
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode curr = head;
+        int count = 0;
+        
+        while(curr!=null){
+            count++;
+            curr = curr.next;
+        }
+        
+        int middle = count/2;
+        
+        curr = head;
+        while(middle --> 0){
+            //It is just a conjunction of the operators -- and >.You first compare, and then decrement the variable.
+            
+            curr = curr.next;
+        }
+        return curr;
+    }
+    
+}
+
+/*
+Time Complexity:  O(N) { Two iterations are used }
+Space Complexity: O(1)
+*/
+
+
+APPROACH 2:
+
+ public ListNode middleNode(ListNode head) {
+        
+        ListNode slow = head;
+        ListNode fast = head;
+        
+        while(fast != null && fast.next!= null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+}
+
+/*
+Time Complexity:  O(N) { Only a Single iteration is used }
+Space Complexity: O(1)
+*/
+
