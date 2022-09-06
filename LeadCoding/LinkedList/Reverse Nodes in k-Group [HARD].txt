@@ -1,0 +1,129 @@
+Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+You may not alter the values in the list's nodes, only nodes themselves may be changed.
+
+Input: head = [1,2,3,4,5], k = 2
+Output: [2,1,4,3,5]
+
+APPROACH 1: (Recursion)
+
+class Solution {
+    
+    public void  reverse(ListNode start ,ListNode end){
+        
+        ListNode prev = null;
+        ListNode curr = start;
+        ListNode next = start.next;
+        
+        while (prev != end) {
+            
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+           
+            if (next != null) {
+                next = next.next;
+            }
+        }
+    }
+    public ListNode reverseKGroup(ListNode head, int k) {
+        
+        //base case
+        if(head == null || head.next == null || k == 1){
+            return head;
+        }
+        
+        ListNode s = head;
+        ListNode e = head;
+        int inc = k -1;
+        while(inc --> 0){
+            e = e.next;
+            if(e == null){
+                return head;
+            }
+        }
+        
+        // calling recursion
+        ListNode ans = reverseKGroup(e.next,k);
+        reverse(s,e);
+        s.next = ans;
+        
+        return e;  
+    }
+}
+/*
+Time  Complexity: O(N)
+Space Complexity: O(N / K) { Recursive Stack Space }
+*/
+
+APPROACH 2: (Optimised)
+
+class Solution {
+    
+    public void  reverse(ListNode start ,ListNode end){
+        
+        ListNode prev = null;
+        ListNode curr = start;
+        ListNode next = start.next;
+        
+        while (prev != end) {
+            
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+           
+            if (next != null) {
+                next = next.next;
+            }
+        }
+    }
+    public ListNode reverseKGroup(ListNode head, int k) {
+        
+        //base case
+        if(head == null || head.next == null || k == 1){
+            return head;
+        }
+        
+        // creating dummy node
+        ListNode dummy = new ListNode(-1);
+        
+        //attached dummy node before head
+        dummy.next = head;
+        
+        ListNode beforeStart = dummy;
+        ListNode end = head;
+        int i = 0;
+        
+        while(end != null){
+            i++;
+            if(i%k == 0){
+                ListNode start = beforeStart.next;
+                ListNode temp = end.next;
+                
+                //reverse
+                reverse(start,end);
+                
+                //attaching new start and end
+                beforeStart.next = end;
+                start.next = temp;
+                
+                //updating pointers
+                beforeStart = start;
+                end = temp;
+                
+            }
+            else{
+                end = end.next;
+            }
+        }
+        
+        return dummy.next;    
+    }
+}
+
+/*
+Time  Complexity: O(N)
+Space Complexity: O(1) 
+*/
+
+
