@@ -1,0 +1,55 @@
+You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+Merge all the linked-lists into one sorted linked-list and return it.
+
+Input: lists = [[1,4,5],[1,3,4],[2,6]]
+Output: [1,1,2,3,4,4,5,6]
+Explanation: The linked-lists are:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+merging them into one sorted list:
+1->1->2->3->4->4->5->6
+
+APPROACH :
+
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+      
+       // creating min heap using pq ..as min heap will have min val on top always. 
+     PriorityQueue<ListNode> pq = new PriorityQueue<>((ListNode l1 ,ListNode l2)->l1.val-l2.val);
+        
+        //inserting all nodes into min heap.
+        for(ListNode list : lists){
+            
+            if(list!=null)
+                pq.add(list);
+        }
+        
+        //creating dummy list to store.
+        ListNode dummy = new ListNode(-1);
+        
+        //tail to keep track of tail to insert
+        ListNode tail = dummy;
+        
+        
+        while(!pq.isEmpty()){
+            
+            //insert the top element of min heap to tail , as it contains min val.
+            tail.next = pq.poll();
+            
+            tail = tail.next;
+            
+            if(tail.next!=null){
+                pq.add(tail.next);
+            }
+        }
+        return dummy.next;
+    }
+}
+
+/*
+Time Complexity:  O(N*LogK)
+Space Complexity: O(K)
+*/
