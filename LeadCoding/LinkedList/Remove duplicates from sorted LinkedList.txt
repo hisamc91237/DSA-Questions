@@ -1,0 +1,68 @@
+Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
+
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
+
+APPROACH 1: Iterative 
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        
+        // temp var
+        ListNode first = head;
+        
+        //when ll is empty or just one node
+        if(head == null || head.next == null) return head;
+        
+        while(first.next!=null){
+           
+            if(first.val == first.next.val){
+                
+            // to store next    
+            ListNode del = first.next;
+                
+            first.next = del.next;
+        }
+            else{
+                first = first.next;
+            }
+            
+        }
+        return head;
+    }
+}
+
+/*
+Time Complexity:  O(N) { N is the Number of Nodes present in Linkedlist }
+Space Complexity: O(1)
+*/
+
+APPROACH 2 : Recursion
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        
+        
+        //base case
+        if(head == null || head.next == null) return head
+            
+        // calling recursion to remove after head.
+        ListNode newHead = deleteDuplicates(head.next);
+        
+        //increment of head
+        if(head.val == newHead.val){
+            return newHead;
+        }
+        else{
+            head.next = newHead;
+            return head;
+        }
+    }
+}
+
+/*
+Time Complexity:  O(N) { N is the Number of Nodes present in Linkedlist }
+Space Complexity: O(N) { Auxillary Recursive Stack Space }
+*/
+
+
