@@ -1,0 +1,89 @@
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+An input string is valid if:
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Every close bracket has a corresponding open bracket of the same type.
+
+Input: s = "()[]{}"
+Output: true
+
+APPROACH 1: 
+
+class Solution {
+public:
+    bool isValid(string st) {
+       
+        stack<char> s;
+        
+        for(int i =0;i<st.length();i++){
+            
+            char ch = st[i];
+            
+            
+            // if opening brackets push to stack
+            if(ch == '(' || ch == '[' || ch == '{')  s.push(ch);
+            
+            else{
+                
+                // if closing 
+                // check first if stack is empty.
+                if(!s.empty()){
+                    char top = s.top();
+                    
+                    // check for matching .. if found pop
+                    if((ch == ')' && top == '(') ||
+                      (ch == '}' && top == '{') ||
+                      (ch == ']' && top == '[') ) s.pop();       
+                
+                    else return false;     
+                }
+                    
+                    else{
+                        return false;
+                    }
+                
+            }
+        }
+        
+        // if stack is empty at last this means brackets matched.
+        if(s.empty()) return true;
+        else return false;
+    }
+};
+
+/* TC : O(N)
+   SC " o(N)
+*/
+
+APPROACH 2:Optimized
+
+class Solution {
+public:
+    
+        
+        bool isValid(string s) {
+        int top = -1;
+        for(int i =0;i<s.length();++i){
+            if(top<0 || !isMatch(s[top], s[i])){
+                ++top;
+                s[top] = s[i];
+            }else{
+                --top;
+            }
+        }
+        return top == -1;
+    }
+    bool isMatch(char c1, char c2){
+        if(c1 == '(' && c2 == ')') return true;
+        if(c1 == '[' && c2 == ']') return true;
+        if(c1 == '{' && c2 == '}') return true;
+        return false;
+    }
+    
+};
+
+TC : O(N)
+SC : O(1)
+
+
+
