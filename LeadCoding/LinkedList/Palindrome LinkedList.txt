@@ -1,0 +1,57 @@
+Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+Input: head = [1,2,2,1]
+Output: true
+
+APPROACH : 
+
+class Solution {
+public:
+    
+    // to reverse LinkedList.
+    ListNode* reverse(ListNode* head){
+        
+        if(head == NULL) return head;
+        
+        ListNode* prev = NULL, *curr = head , *next = head->next;
+        
+        while(curr!=NULL){
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+            
+            if(next!=NULL) next = next->next;
+        }
+        return prev;
+    }
+    
+    bool isPalindrome(ListNode* head) {
+        
+        // to find a node just before mid
+        ListNode* slow = head, *fast = head;
+        
+        // change in condition to get one node before mid.
+        while(fast->next!=NULL && fast->next->next!=NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        //reversing from middle of LL.
+        slow->next = reverse(slow->next);
+        
+        ListNode* start = head;
+        ListNode* mid = slow->next;
+        
+        while(mid!=NULL){
+            
+            if(mid->val!=start->val) return false;
+            
+            mid = mid->next;
+            start = start->next;     
+        }
+        
+        // restructure LL if interviewer asked.
+        slow->next = reverse(slow->next);
+        return true;
+    }
+};
