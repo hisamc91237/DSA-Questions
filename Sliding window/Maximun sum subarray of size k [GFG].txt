@@ -1,0 +1,46 @@
+Given an array of integers Arr of size N and a number K. Return the maximum sum of a subarray of size K.
+
+Input:
+N = 4, K = 2
+Arr = [100, 200, 300, 400]
+Output:
+700
+Explanation:
+Arr3  + Arr4 =700,
+which is maximum.
+
+APPROACH :
+
+public:
+    long maximumSumSubarray(int k, vector<int> &arr , int n){
+        long i =0;
+        int j =0;
+        long sum = 0;
+        long maxi = 0;
+        
+        
+        // till end pointer reaches n.
+        while(j < n){
+            
+            // to put the j on k size .. to make a k size window.
+            if((j - i + 1) < k){
+                sum += arr[j];
+                j++;
+            }
+            
+            // if we got window size just maintain the window. 
+            else if((j - i + 1) == k){
+                sum += arr[j];
+                maxi = max(maxi,sum);
+                
+                // subtract the ith elemnent before increment.
+                sum -= arr[i];
+                
+                // increment both the  pointers.
+                i++;
+                j++;
+                
+            }
+        }
+        return maxi;
+    }

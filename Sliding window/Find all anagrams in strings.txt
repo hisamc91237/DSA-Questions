@@ -1,0 +1,57 @@
+Given two strings s and p, return an array of all the start indices of p's anagrams in s. You may return the answer in any order.
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+Input: s = "cbaebabacd", p = "abc"
+Output: [0,6]
+Explanation:
+The substring with start index = 0 is "cba", which is an anagram of "abc".
+The substring with start index = 6 is "bac", which is an anagram of "abc".
+
+APPROACH : 
+
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        
+        // calculating length of both string.
+        int len_s = s.size();
+        int len_p = p.size();
+        
+        // if p is larger than main string.
+        if(len_s < len_p) return {};
+        
+        // creating vectors of size 26 to store frequency of char.
+       // this is for p string
+        vector<int> p_freq(26,0);
+        
+        // this for s string.
+        vector<int> window(26,0);
+        
+         // iterate for first window..i.e p_size as it is our window length.
+        for(int i=0;i<len_p;i++){
+            
+            // storing frequency of char in vector
+            p_freq[p[i]-'a']++;
+            window[s[i]-'a']++;
+        }
+        
+        vector<int> ans;
+        
+         // cmpare vector and if it same ..push 0 as for first window 0 is the index.
+        if(p_freq == window) ans.push_back(0);
+        
+        // iterate for remianing string
+        for(int i=len_p;i<len_s;i++){
+            
+            // to element the starting char of window.
+            window[s[i-len_p] - 'a']--;
+            window[s[i] - 'a']++;
+            
+            // i - len_p + 1 will return starting index of anagram.
+            if(p_freq == window) ans.push_back(i-len_p+1);
+        }
+        return ans;
+    }
+};
+
+TC : O(N) * (26) = O(N)

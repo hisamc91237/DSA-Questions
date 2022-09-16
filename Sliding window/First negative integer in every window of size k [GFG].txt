@@ -1,0 +1,48 @@
+Given an array A[] of size N and a positive integer K, find the first negative integer for each and every window(contiguous subarray) of size K.
+
+Input : 
+N = 5
+A[] = {-8, 2, 3, -6, 10}
+K = 2
+Output : 
+-8 0 -6 -6
+Explanation :
+First negative integer for each window of size k
+{-8, 2} = -8
+{2, 3} = 0 (does not contain a negative integer)
+{3, -6} = -6
+{-6, 10} = -6
+
+APPROACH : 
+
+vector<long long> printFirstNegativeInteger(long long int arr[],
+                                             long long int n, long long int k) {
+                                                 
+    queue<long long> q;
+    vector<long long> ans;
+    
+    // insert k -1 negative in queue.
+    for(int i=0;i<k-1;i++){
+        if(arr[i] < 0) q.push(arr[i]);
+    }
+    
+    // start iterating from k -1 till n
+    for(int i=k-1 ; i<n;i++){
+        
+        // if element is negative.. push in queue.
+        if(arr[i] < 0) q.push(arr[i]);
+        
+        // if q is not empty..put front element in ans.
+        if(!q.empty()){
+            ans.push_back(q.front());
+            
+            
+            if(q.front() == arr[i-k+1])
+             q.pop();
+        }   
+            else {
+                ans.push_back(0);
+        }
+    }
+    return ans;
+ 
