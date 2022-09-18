@@ -1,0 +1,81 @@
+Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+Input: nums = [1,1,1], k = 2
+Output: 2
+
+APPROACH 1 : Brute Force
+
+class Solution {
+public:
+    int subarraySum(vector<int>& arr, int k) {
+        int n = arr.size(); // taking the size of the array
+        
+        int ans = 0; // ans variable to store our count
+        
+        for(int i = 0; i < n; i++) // traverse from the array
+        {
+            int sum = arr[i]; // provide sum with arr[i]
+            
+            if(sum == k) // if element itself equal to k, then also increment count
+                ans++;
+            
+            for(int j = i + 1; j < n; j++) // now moving forward,
+            {
+                sum += arr[j]; // add elements with sum
+                
+                if(sum == k) // if at any point they become equal to k
+                    ans++; // increment answer
+            }
+            
+        }
+        
+        return ans; // and at last, return answer
+    }
+};
+
+Time Complexity --> O(n ^ 2) // where n is the size of the array
+Space Complexity --> O(1) // we are not using anything extra from our side
+
+APPROACH 2 
+
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        
+        int prefix[n]; // prefix array of size n.
+        
+        prefix[0] = nums[0]; // initially prefix of 0  is array of 0.
+        
+        // traverse through 1 to n
+        for(int i = 1 ;i<n;i++){
+            prefix[i] = nums[i] + prefix[i - 1];
+        }
+        
+        unordered_map<int , int> mp;
+        int ans = 0;
+        
+        for(int i = 0 ; i<n;i++){
+            
+            if(prefix[i] == k) // if it already becomes equal to k, then increment ans
+                ans++;
+            
+            // now, as we discussed find whether (prefix[i] - k) present in map or not
+            if(mp.find(prefix[i] - k) != mp.end())
+            {
+                ans += mp[prefix[i] - k]; // if yes, then add it our answer
+            }
+            
+            mp[prefix[i]]++; // put prefix sum into our map
+        }
+        
+        return ans;
+        
+    }
+};
+
+
+Time Complexity --> O(n) // where n is the size of the array
+Space Complexity --> O(n) // we are using unordered map from our side
+
