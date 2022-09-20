@@ -1,0 +1,149 @@
+Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+You must do it in place
+
+Input: matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+
+APPROACH 1 : Brute Force
+
+- Traverse the entire matrix if any 0 is found..change element in row and col to -1 except that 0.
+- Reason for not changing other element to 0 is it might afffect other col and row.
+- Traverse again and if any value is -1..mark it at as 0.
+
+CODE:
+
+void setZeroes(vector < vector < int >> & matrix) {
+  int rows = matrix.size(), cols = matrix[0].size();
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      if (matrix[i][j] == 0) {
+
+        int ind = i - 1;
+        while (ind >= 0) {
+          if (matrix[ind][j] != 0) {
+            matrix[ind][j] = -1;
+          }
+          ind--;
+        }
+        ind = i + 1;
+        while (ind < rows) {
+          if (matrix[ind][j] != 0) {
+            matrix[ind][j] = -1;
+          }
+          ind++;
+        }
+        ind = j - 1;
+        while (ind >= 0) {
+          if (matrix[i][ind] != 0) {
+            matrix[i][ind] = -1;
+
+          }
+          ind--;
+        }
+        ind = j + 1;
+        while (ind < cols) {
+          if (matrix[i][ind] != 0) {
+            matrix[i][ind] = -1;
+
+          }
+          ind++;
+        }
+      }
+    }
+  }
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      if (matrix[i][j] <= 0) {
+        matrix[i][j] = 0;
+      }
+    }
+  }
+
+}
+
+Time Complexity: O((N*M)*(N + M)). O(N*M) for traversing through each element and (N+M)for traversing to row and column of elements having value 0.
+
+APPROACH 2 (Better) : By using dummny row and coloumn.
+
+Intuition: Instead of traversing through each row and column, we can use dummy arrays to check if the particular row or column has an element 0 or not, which will improve the time complexity.
+
+- Take two dummy arrays of row and col size
+- If matrix[i][j]==0 then set dummy1[i]=0(for row) and dummy2[j]=0(for column).
+- Now traverse again and if dummy1[i]==0  || dummy2[j]==0 then arr[i][j]=0,else continue.
+
+CODE : 
+
+void setZeroes(vector < vector < int >> & matrix) {
+  int rows = matrix.size(), cols = matrix[0].size();
+  vector < int > dummy1(rows,-1), dummy2(cols,-1);
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      if (matrix[i][j] == 0) {
+        dummy1[i] = 0;
+        dummy2[j] = 0;
+      }
+    }
+
+  }
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      if (dummy1[i] == 0 || dummy2[j]==0) {
+        matrix[i][j] = 0;
+      }
+    }
+  }
+
+}
+
+
+TC :  O(N*M + N*M)
+SC : O(N)
+
+APPROACH 3 (Best) : 
+
+Intuition: Instead of taking two dummy arrays we can use the first row and column of the matrix for the same work. This will help to reduce the space complexity of the problem. While traversing for the second time the first row and column will be computed first, which will affect the values of further elements that’s why we traversing in the reverse direction. 
+
+- make first row and column as a dummy to decrease Space required from above.
+- Therefore take separate variable col0(say) to check if the 0th column has 0 or not and use matrix[0][0] to check if the 0th row has 0 or not.
+- Now traverse from last element to the first element and check if matrix[i][0]==0 || matrix[0][j]==0 and if true set matrix[i][j]=0,else continue.
+
+CODE : 
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        
+        int rows = matrix.size();
+        int cols = matrix[0].size(); // size of col.
+        int col0 = 1; // col0 as true.
+        
+        // linearly traverse.
+        for(int i = 0 ;i < rows;i++){
+            
+            // if first coloumn contains 0 .. mark col0 as false.
+            if ( matrix[i][0] == 0) col0 = 0;
+            for(int j = 1;j<cols;j++)
+                if(matrix[i][j] == 0)
+                    
+                    // mark leftmost and topmost value as  0.
+                    matrix[i][0] = matrix[0][j] = 0;
+        }
+        
+        // traverse from back
+        for(int i = rows-1; i >= 0;i--){
+            for(int j = cols-1;j>=1;j--)
+                
+                // if leftmost and  topmost is 0 .. mark that mat with 0.
+                if(matrix[i][0] == 0 || matrix[0][j] == 0)
+                    matrix[i][j] = 0;
+            if(col0 == 0) matrix[i][0] = 0;
+            
+        }
+    }
+};
+
+TC : O(2*(N*M)), as we are traversing two times in a matrix,
+SC : O(1).
+
+
+
