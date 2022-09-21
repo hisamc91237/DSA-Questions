@@ -1,0 +1,49 @@
+Given two binary trees, the task is to find if both of them are identical or not. 
+
+Input:
+     1          1
+   /   \      /   \
+  2     3    2     3
+Output: Yes
+Explanation: There are two trees both
+having 3 nodes and 2 edges, both trees
+are identical having the root as 1,
+left child of 1 is 2 and right child
+of 1 is 3.
+
+APPROACH :
+
+class Solution
+{
+    public:
+    //Function to check if two trees are identical.
+    bool isIdentical(Node *r1, Node *r2)
+    {
+        // base case
+        if(r1 == NULL && r2 == NULL){
+            return true;
+        }
+        
+        // check if any one these is not NUll.
+        if(r1 == NULL && r2 != NULL){
+            return false;
+        }
+        if(r1 != NULL && r2 == NULL){
+            return false;
+        }
+        
+        // recursion on left and right.
+        bool left = isIdentical(r1 -> left, r2 -> left);
+        bool right = isIdentical(r1 -> right , r2 -> right);
+        
+        // compare data of both trees
+        bool value = r1 -> data == r2 -> data;
+    
+        // if all true..then return true.
+        if( left && right && value){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }

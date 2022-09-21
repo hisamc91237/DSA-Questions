@@ -1,0 +1,91 @@
+The diameter of a tree (sometimes called the width) is the number of nodes on the longest path between two end nodes. The diagram below shows two trees each with diameter nine, the leaves that form the ends of the longest path are shaded (note that there is more than one path in each tree of length nine, but no path longer than nine nodes). 
+
+Input:
+     1
+    /  \
+   2    3
+Output: 3
+
+APPROACH 1 : Brute Force ..TC : O(N2) .. as traversing one time for diamter and one for height.
+
+class Solution {
+    private:
+    
+    //Function to find the height of a binary tree.
+    int height(struct Node* node){
+        
+    // base case
+    if( node == NULL){
+        return 0;
+    }
+    
+    int left = height(node -> left);
+    int right = height(node -> right);
+    
+    // this is actually imp ..as it returns 1 for every base case.
+    int ans = max(left,right) + 1;
+    
+    return ans;
+    }
+  public:
+    // Function to return the diameter of a Binary Tree.
+    int diameter(Node* root) {
+        // Your code here
+        if(root == NULL){
+            return 0;
+        }
+        // for left and right
+        int opt1 = diameter(root -> left);
+        int opt2 = diameter(root -> right);
+        
+        // for both by getting absolute height of both
+        int opt3 = abs(height(root->left) + height(root->right) + 1);
+        
+        // ans will be the max of all three options.
+        int ans = max(opt1,max(opt2,opt3));
+        
+        return ans;
+    }
+
+APPROACH 2 : Optimized......TC: O(N).
+
+Intution : Instead of traversing two time for diameter and height..traverse one time and store in pair .
+
+CODE : 
+
+class Solution {
+    
+  public:
+  
+    pair<int,int> diameterFast(Node* root){
+        
+        // base case.
+        if(root == NULL){
+            pair<int , int>p = make_pair(0,0);
+            return p;
+        }
+        // recursion on left and right.
+        pair <int,int> left = diameterFast(root -> left);
+        pair <int,int> right = diameterFast(root -> right);
+        
+        // diamter of left and right as we consider firsr as diamter.
+        int opt1 = left.first;
+        int opt2 = right.first;
+        
+        // height of treee.
+        int opt3 = left.second + right.second + 1;
+
+        // To store ans.
+        pair<int ,int> ans;
+        
+        // calculate diameter and height.
+        ans.first = max(opt1,max(opt2,opt3));
+        ans.second = max(left.second , right.second) + 1;
+    
+        return ans;
+    }
+
+    // Function to return the diameter of a Binary Tree.
+    int diameter(Node* root) {
+        return diameterFast(root).first;
+    }

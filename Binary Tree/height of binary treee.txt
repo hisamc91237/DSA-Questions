@@ -1,0 +1,31 @@
+Given a binary tree, find its height.
+
+Input:
+     1
+    /  \
+   2    3
+Output: 2
+
+APPROACH : 
+
+class Solution{
+    public:
+    
+    //Function to find the height of a binary tree.
+    int height(struct Node* node){
+        
+    // base case
+    if( node == NULL){
+        return 0;
+    }
+    
+    int left = height(node -> left);
+    int right = height(node -> right);
+    
+    // this is actually imp ..as it returns 1 for every base case.
+    int ans = max(left,right) + 1;
+    
+    return ans;
+
+TC : O(N)
+SC : O(N)
