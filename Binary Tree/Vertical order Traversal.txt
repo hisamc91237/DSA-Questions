@@ -1,0 +1,68 @@
+Given a Binary Tree, find the vertical traversal of it starting from the leftmost level to the rightmost level.
+If there are multiple nodes passing through a vertical line, then they should be printed as they appear in level order traversal of the tree.
+
+Input:
+           1
+         /   \
+       2       3
+     /   \   /   \
+   4      5 6      7
+              \      \
+               8      9           
+Output: 
+4 2 1 5 6 3 8 7 9 
+
+APPROACH : 
+
+public:
+    //Function to find the vertical order traversal of Binary Tree.
+    vector<int> verticalOrder(Node *root)
+    {
+
+        // map to store int for hd another mapping for lvl and last for ans vector.
+        map<int , map<int , vector<int> > > nodes;
+        
+        //queue with pair of nodes and int which contains hd and lvl. 
+        queue<pair<Node* , pair<int , int > > > q;
+        
+        vector<int> ans;
+        if(root == NULL) return ans;
+        
+        // initially q will contain root and lvl and hd as 0.
+        q.push(make_pair(root , make_pair(0,0)));
+        
+        while(!q.empty()){
+            
+            // as q is of this type ..we take temp as this to store front.
+            pair<Node* , pair<int , int > > temp = q.front();
+            q.pop();
+            
+            // temp.first = Node..temp.second.seconf will point to hd and second.second to lvl.
+            Node* frontNode = temp.first;
+            int hd = temp.second.first;
+            int lvl = temp.second.first;
+            
+            //store data in map. 
+            nodes[lvl][hd].push_back(frontNode -> data);
+            
+            // if left is non null..we push h-1 as left contains negative and lvl + 1.
+            if(frontNode -> left)
+                q.push(make_pair(frontNode -> left , make_pair(hd-1 , lvl+1)));
+             
+             // if right is non null..we push h+1 as right contains positive and lvl + 1;   
+             if(frontNode -> right)
+                q.push(make_pair(frontNode -> right , make_pair(hd+1 , lvl+1)));
+                
+        }
+        // it is to iterate complete map.
+        for(auto i : nodes){
+            // it is to iterate i.second which is another map..inside map.
+            for(auto j : i.second){
+                // it is to iterate the vector<int> inside map.
+                for(auto k : j.second){
+                    ans.push_back(k);
+                }
+            }
+        }
+        return ans;
+    }
