@@ -1,0 +1,70 @@
+Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+You must solve this problem without using the library's sort function.
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+
+APPROACH 1 : TC...O(NlogN)
+- Just sortvthe entire array
+
+APPROACH 2 : TC...O(2N)
+
+- count the number of 0,1,2.
+- run a loop and insert those number of 0,1,2.
+
+CODE:
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int a = 0,b = 0,c =0;
+        for( auto i : nums){
+            if(i == 0) a++;
+            else if (i == 1)b++;
+            else c++;
+        }
+        int i = 0;
+            while(a--)nums[i++] = 0;
+            while(b--)nums[i++] = 1;
+            while(c--)nums[i++] = 2;
+    }
+};
+
+APPROACH 3 : National Dutch Flag Algorithm Variation....TC...O(N)
+
+ALGORITHM :
+
+- take three pointer lo,mid put it as 0 and hi as last.
+- if mid == 0 ..swap low++ and mid++.
+- if mid == 1 ..mid++.
+- if mid == 2 ..swap mid and hi--/
+
+CODE:
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        
+        // low and mid as 0 and high with last.
+        int low = 0 , mid = 0;
+        int high = nums.size() -1;
+            
+            while( mid <= high){
+                switch(nums[mid]){
+                case 0:{
+                   swap(nums[low++],nums[mid++]);
+                        break;
+                }     
+                case 1:{
+                    mid++;
+                    break;
+                }
+                case 2:{
+                    swap(nums[mid],nums[high--]);
+                         break;
+                }        
+            }
+        }
+    }
+};
