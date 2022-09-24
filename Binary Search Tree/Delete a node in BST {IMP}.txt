@@ -1,0 +1,75 @@
+Given a Binary Search Tree and a node value X. Delete the node with the given value X from the BST. If no node with value x exists, then do not make any change. 
+
+Example 1:
+
+Input:
+      2
+    /   \
+   1     3
+X = 12
+Output: 1 2 3
+Explanation: In the given input there
+is no node with value 12 , so the tree
+will remain same.
+
+APPRPOACH :
+
+Node* minVal(Node* root){
+    Node* temp = root;
+    
+    if(root == NULL) return NULL;
+    while(temp-> left != NULL) temp = temp -> left;
+    return temp;
+}
+
+// Function to delete a node from BST.
+Node *deleteNode(Node *root, int X) {
+    // your code goes here
+    
+    if(root == NULL) return NULL;
+    
+    // if data is found it has 3 cases.
+    if(root -> data == X) 
+        {
+            // 0 child case.
+            if(root -> right == NULL and root -> left == NULL){
+               delete root;
+               return NULL;
+            }
+            // 1 child has 2 seperate case.
+            // left subtree
+            if(root -> left!= NULL and root -> right == NULL){
+                Node* temp = root->left;
+                delete root;
+                return temp;
+            }
+            
+            // right subtree.
+            if(root -> left == NULL && root -> right != NULL){
+                Node* temp = root -> right;
+                delete root;
+                return temp;
+            }
+            
+            //2 child case.
+            if(root -> right != NULL and root -> left != NULL){
+               // minimum
+               int mini = minVal (root->right)->data;
+               root -> data = mini;
+               root -> right = deleteNode(root->right , mini);
+               return root;
+            }
+        
+        }
+        // if data is smaller..left ki call
+        else if(root -> data > X){
+            root -> left = deleteNode(root -> left, X);
+            return root;
+        }
+        
+        // else right ki call.
+        else{
+            root -> right = deleteNode(root-> right,X);
+            return root;
+        }
+}

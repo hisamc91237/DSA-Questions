@@ -1,0 +1,58 @@
+Given a binary tree, flatten it into linked list in-place. Usage of auxiliary data structure is not allowed. After flattening, left of each node should point to NULL and right should contain next node in preorder.
+
+Input : 
+          1
+        /   \
+       2     5
+      / \     \
+     3   4     6
+Output :
+1 2 3 4 5 6 
+Explanation: 
+After flattening, the tree looks 
+like this
+    1
+     \
+      2
+       \
+        3
+         \
+          4
+           \
+            5
+             \
+              6 
+Here, left of each node points 
+to NULL and right contains the 
+next node in preorder.The inorder 
+traversal of this flattened tree 
+is 1 2 3 4 5 6.
+
+APPROACH : BY Using Morris Travesal
+
+public:
+    void flatten(Node *root)
+    {
+        // curr = root
+        Node* curr = root;
+        
+        while(curr != NULL){
+            
+            // if curr left is present ..pred = curr -> left.
+            if(curr -> left){
+                Node* pred = curr->left;
+                
+                // jab tk predecesor of right present..pred = pred->right.
+                while(pred->right)
+                    pred = pred->right;
+                    
+                    // joining links and breaking.
+                    pred->right = curr->right;
+                    curr->right = curr->left;
+                    
+                    // curr ->l left == NULL as left is of no use.
+                    curr->left = NULL;
+                }
+                curr = curr->right;
+            
+        }
