@@ -1,0 +1,42 @@
+Given the root of a Binary Search Tree and a target number k, return true if there exist two elements in the BST such that their sum is equal to the given target.
+
+Input: root = [5,3,6,2,4,null,7], k = 9
+Output: true
+
+APPROACH : 
+
+class Solution {
+public:
+    
+    // storing inorder in vector.
+    void inorder(TreeNode* root,vector<int> &inorderValues){
+        
+        if(root == NULL) return;
+        
+        inorder(root -> left , inorderValues);
+        inorderValues.push_back(root->val);
+        inorder(root->right , inorderValues);
+    }
+    
+    bool findTarget(TreeNode* root, int k) {
+        vector<int> inorderValues;
+        inorder(root , inorderValues);
+        
+        // 2 pointer approach.
+        int i = 0;
+        int j = inorderValues.size() -1;
+        
+        while(i < j){
+            int sum = inorderValues[i] + inorderValues[j];
+            
+            if(sum == k) return true;
+             
+            // if sum is greater j-- .else i++.
+            else if(sum > k) 
+                j--;
+            else
+                i++;
+        }
+        return false;
+    }
+};

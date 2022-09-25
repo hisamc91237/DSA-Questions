@@ -1,0 +1,42 @@
+pair<int,int> predecessorSuccessor(BinaryTreeNode<int>* root, int key)
+{
+    // find key
+    BinaryTreeNode<int>* temp = root;
+    int pred = -1;
+    int succ = -1;
+    
+    // traverse till we get key
+    while(temp->data != key){
+        
+        // as data is greater it might be the succ
+        if(temp -> data > key){
+            succ = temp -> data;
+            temp = temp -> left;
+        }
+        else{
+            // as data is smaller it might be the pred.
+            pred = temp -> data;
+            temp = temp -> right;
+        }
+    }
+    
+    // pred
+    BinaryTreeNode<int>* leftTree = temp -> left;
+    while(leftTree != NULL){
+        pred = leftTree -> data;
+        
+        // right as we have to find max val.
+        leftTree = leftTree -> right;
+    }
+    
+    // succ
+    BinaryTreeNode<int>* rightTree = temp -> right;
+    while(rightTree != NULL){
+        succ = rightTree -> data;
+        
+        // left as we have to find min val.
+        rightTree = rightTree -> left;
+    }
+    
+    return {pred , succ};
+}

@@ -1,0 +1,63 @@
+# include <iostream>
+# include<bits/stdc++.h>
+using namespace std;
+
+class Node{
+        public:
+          int data;
+          Node* left;
+          Node* right;
+
+        Node(int data){
+                this->data = data;
+                this->left = NULL;
+                this->right = NULL;
+        }
+};
+
+Node* insertData(Node* root , int data){
+
+        // base case
+        if(root == NULL){
+                root = new Node(data);
+                return root;
+        }
+        if(data > root -> data ){
+                root -> right = insertData(root->right , data);
+        }
+        else
+                root -> left = insertData(root->left,data);
+
+        return root;
+}
+void preorderTraversal(Node* root){
+
+        // base case
+        if(root == NULL) return;
+
+        cout << root -> data << " ";
+        preorderTraversal(root->left);
+        preorderTraversal(root->right);
+}
+void inputData(Node* &root, int n){
+        int data;
+        cin >> data;
+
+        while(n--){
+              root =  insertData(root,data);
+                cin >> data;
+        }
+}
+
+
+int main() {
+
+        int n;
+        cin >> n;
+        
+    Node* root = NULL;
+        inputData(root ,n);
+
+        preorderTraversal(root);
+    return 0;
+}
