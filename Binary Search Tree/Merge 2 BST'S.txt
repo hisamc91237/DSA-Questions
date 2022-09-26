@@ -1,0 +1,200 @@
+APPROACH 1 : TC ..O(m + n) & SC ..O(m + n).
+
+// function to store inorder of tree in a vector.
+void helper(TreeNode<int>* root , vector<int> &ans){
+        // base case
+        if(root == NULL) return;
+    
+    helper(root->left , ans);
+    ans.push_back(root->data);
+    helper(root->right , ans);
+    
+}
+
+// fuction to merge two sorted arrays.
+vector<int> mergeTwoArrays(vector<int> a, vector<int> b){
+        
+    vector<int> ans(a.size() + b.size());
+    
+    // three pointers for 3 arrays
+    int i = 0 , j = 0 ,k = 0;
+    
+    while(i < a.size() && j < b.size()){
+        if( a[i] < b[j]){
+            ans[k++] = a[i];
+            i++;
+        }
+        else{
+            ans[k++] = b[j];
+            j++;
+        }
+    }
+    
+    while( i < a.size()){
+        ans[k++] = a[i];
+        i++;
+    }
+    
+    while(j < b.size()){
+        ans[k++] = b[j];
+        j++;
+    }
+    
+    return ans;
+}
+
+// Construct BST from vector.
+TreeNode<int>* constructBST(int s , int e , vector<int> &ans){
+ 
+    // Base case
+    if(s > e) return NULL;
+    
+    int mid = (s + e) / 2;
+    
+    TreeNode<int>* root = new TreeNode<int>(ans[mid]);
+    
+    // recursion call
+    root -> left = constructBST(s , mid - 1 , ans);
+    root -> right = constructBST( mid + 1 , e , ans);
+    return root;
+}
+TreeNode<int> *mergeBST(TreeNode<int> *root1, TreeNode<int> *root2){
+    
+    vector<int> bst1 , bst2;
+    
+    //Step 1 :  function call to store inorder
+    helper(root1 , bst1);
+    helper(root2 , bst2);
+    
+    //Step 2 : Merge two sorted vector
+    vector<int> ans = mergeTwoArrays(bst1 , bst2);
+    
+    // Step 3 : Construct BST from vector.
+    return constructBST(0 , ans.size() - 1 , ans);
+    
+}
+
+APPROACH 2 : TC...(m + n) , SC ...O(h1 + h2).
+
+// function to convert BST to DLL
+void convertBSTtoDLL(TreeNode<int>* root , TreeNode<int>* &head){
+    
+    if(root == NULL) return ;
+    
+    //convert right subtree
+    convertBSTtoDLL(root -> right , head);
+    
+    // algo :
+    
+    root -> right = head;
+    if(head != NULL) head -> left = root;
+    head = root;
+    
+    // convert left subtree
+    convertBSTtoDLL(root -> left , head);   
+}
+
+// function to merge LinkedList
+TreeNode<int>* mergeSortedLinkedList(TreeNode<int>* head1 , TreeNode<int>* head2){
+    
+    TreeNode<int>* head = NULL;
+    TreeNode<int>* tail = NULL;
+    
+    while(head1 != NULL && head2 != NULL){
+        if(head1 -> data < head2 -> data){
+            
+            // checl whether to insert at head or tail.
+            if(head == NULL){
+                head = head1;
+                tail = head1;
+                head1 = head1 -> right;
+            }
+            else{
+                tail -> right = head1;
+                head1 -> left = tail;
+                tail = head1;
+                head1 = head1 -> right;
+            }
+        }
+        else{
+            
+            if(head == NULL){
+                head = head2;
+                tail = head2;
+                head2 = head2 -> right;
+            }
+            else{
+                
+                tail -> right = head2;
+                head2 -> left = tail;
+                tail = head2;
+                head2 = head2 -> right;
+            }
+        }
+    }
+    while(head1 != NULL){
+                tail -> right = head1;
+                head1 -> left = tail;
+                tail = head1;
+                head1 = head1 -> right;
+    }
+    while(head2 != NULL){
+                tail -> right = head2;
+                head2 -> left = tail;
+                tail = head2;
+                head2 = head2 -> right;
+    }
+    return head;
+}
+
+// Function to count number of nodes
+int countNode(TreeNode<int>* head){
+    TreeNode<int>* temp = head;
+    int count = 0;
+    while(temp){
+        count++;
+        temp = temp -> right;
+    }
+    return count;
+}
+
+// Function to convert LL into BST
+TreeNode<int>* sortedLLToBST(TreeNode<int>* &head , int n){
+    
+    // base case.
+    if( n <= 0 || head == NULL) return NULL;
+    
+    //create left subtree
+    TreeNode<int>* left = sortedLLToBST(head , n /2);
+    
+    // create root
+    TreeNode<int>* root = head;
+    root -> left = left; // point root left to left subtree.
+    
+    // head ko aage badha do.
+    head = head -> right;
+    
+    // create right subtreee.
+    root -> right = sortedLLToBST(head , n-n/2-1);
+    return root;
+}
+
+TreeNode<int> *mergeBST(TreeNode<int> *root1, TreeNode<int> *root2){
+  
+       // Step 1 : Convert BST into sorted LinkedList.
+        TreeNode<int>* head1 = NULL;
+        convertBSTtoDLL(root1 , head1);
+        head1 -> left = NULL;  
+    
+        TreeNode<int>* head2 = NULL;
+        convertBSTtoDLL(root2 , head2);
+        head2 -> left = NULL;  
+    
+        // Step 2 : Merge Sorted LinkedList
+        TreeNode<int>* head = mergeSortedLinkedList(head1 , head2);
+    
+        // Step 3 : LinkedList to BST
+        return sortedLLToBST(head ,countNode(head));
+   
+}
+
