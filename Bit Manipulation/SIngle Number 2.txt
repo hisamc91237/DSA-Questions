@@ -1,0 +1,21 @@
+Given an integer array nums where every element appears three times except for one, which appears exactly once. Find the single element and return it.
+You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+Input: nums = [2,2,3,2]
+Output: 3
+
+APPROACH :
+
+class Solution {
+public:
+    int singleNumber(vector<int>& A) {
+        
+        
+       int ones = 0, twos = 0;
+    for(int i = 0; i < A.size(); i++){
+        ones = (ones ^ A[i]) & ~twos;
+        twos = (twos ^ A[i]) & ~ones;
+    }
+    return ones;
+    }
+};
