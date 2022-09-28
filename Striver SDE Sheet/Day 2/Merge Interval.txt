@@ -1,0 +1,87 @@
+Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+
+Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+
+Question to Interviewer :
+- Whether all the intervals are sorted or not.
+
+APPROACH 1 : TC : o(N2)
+
+vector < pair < int, int >> merge(vector < pair < int, int >> & arr) {
+
+    int n = arr.size();
+    sort(arr.begin(), arr.end());
+    vector < pair < int, int >> ans;
+
+    for (int i = 0; i < n; i++) {
+        int start = arr[i].first, end = arr[i].second;
+
+        //since the intervals already lies 
+        //in the data structure present we continue
+        if (!ans.empty()) {
+            if (start <= ans.back().second) {
+                continue;
+            }
+        }
+
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j].first <= end) {
+                end = max(end, arr[j].second);
+            }
+        }
+    
+        end = max(end, arr[i].second);
+
+        ans.push_back({start, end});
+    }
+
+    return ans;
+}
+
+APPROACH 2 : Tc : O(N) + O(NLOGN) ( this is for sorting)
+
+ALGO :
+
+- Check for edge case , i.e sie is 0.
+- sort the intervals.
+- store first interval in a temp vector.
+- iterate over intervals
+
+CODE : 
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        
+        // to store ans and return
+        vector<vector<int>> mergeIntervals;
+        
+        // edge case
+        if(intervals.size() == 0) return mergeIntervals;
+        
+        // sort the intervals.
+        sort(intervals.begin() , intervals.end());
+        
+        // vector which contains first interval
+        vector<int> tempInterval = intervals[0];
+        
+        for(auto i : intervals){
+            
+            // initially both at 0 ..so 0 inidicate first number anf 1 indiciate 2nd.
+            if(i[0] <= tempInterval[1])
+                tempInterval[1] = max(i[1] , tempInterval[1]);
+            else{
+                mergeIntervals.push_back(tempInterval);
+                
+                // reintialize tempInterval.
+                tempInterval = i;
+            }
+        }
+        mergeIntervals.push_back(tempInterval);
+        return mergeIntervals;
+    }
+};
+
+
