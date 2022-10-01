@@ -1,0 +1,47 @@
+You are given a 0-indexed string word, consisting of lowercase English letters. You need to select one index and remove the letter at that index from word so that the frequency of every letter present in word is equal.
+Return true if it is possible to remove one letter so that the frequency of all letters in word are equal, and false otherwise.
+Note:
+The frequency of a letter x is the number of times it occurs in the string.
+You must remove exactly one letter and cannot chose to do nothing.
+
+Input: word = "abcc"
+Output: true
+Explanation: Select index 3 and delete it: word becomes "abc" and each character has a frequency of 1.
+
+APPROACH :
+
+class Solution {
+public:
+    
+    // function to check if frequency of all elements are same or not.
+    bool isSame(map<char , int>mp){
+        set<int> st;
+        for(auto i : mp){
+            if(i.second > 0)
+                st.insert(i.second);
+        }
+        
+        // if size is 1 this means only same frequency is present.
+        if(st.size() == 1)return true;
+        
+        return false;
+    }
+    bool equalFrequency(string word) {
+        
+        map<char ,int> freq;
+        set<int>st;
+        
+        // storing frequency.
+        for(auto i : word) freq[i]++;
+        
+        // decermeneting and check if frequency is same or not.
+        for(auto i : freq){
+            freq[i.first]--;
+            if(isSame(freq)) return true;
+            
+            // again increment.
+            freq[i.first]++;
+        }
+        return false;
+    }
+};
