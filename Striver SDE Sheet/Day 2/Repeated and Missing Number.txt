@@ -1,0 +1,139 @@
+You are given a read only array of n integers from 1 to n.
+Each integer appears exactly once except A which appears twice and B which is missing.
+Return A and B.
+
+Note: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+Note that in your output A should precede B.
+
+Example:
+
+Input:[3 1 2 5 3] 
+Output:[3, 4] 
+A = 3, B = 4
+
+APPROACH 1 : TC : O(N) , SC : O(N)
+
+- By creating freq array and store frequncy of numbers.
+- again iterate and check and return ans.
+
+CODE :
+
+vector<int> find_missing_repeating(vector<int> array)
+{
+    int n = array.size() + 1;
+
+    vector<int> substitute(n, 0); // initializing the substitute array with 0 of size n+1.
+
+    vector<int> ans;              // initializing the answer  array .
+
+    for (int i = 0; i < array.size(); i++)
+    {
+        substitute[array[i]]++;
+    }
+
+    for (int i = 1; i <= array.size(); i++)
+    {
+        if (substitute[i] == 0 || substitute[i] > 1)
+        {
+            ans.push_back(i);
+        }
+    }
+
+    return ans;
+}
+
+OPTIMAL APPROACH 1 : TC : O(N) , SC :O(1)
+
+Limitation :
+	Have to use long long for maths which might not be allowed in a interview.
+
+Intution :
+	Convert the prblm in maths equation.
+
+CODE :
+
+vector<int>missing_repeated_number(const vector<int> &A) {
+    long long int len = A.size();
+
+    long long int S = (len * (len+1) ) /2;
+    long long int P = (len * (len +1) *(2*len +1) )/6;
+    long long int missingNumber=0, repeating=0;
+     
+    for(int i=0;i<A.size(); i++){
+       S -= (long long int)A[i];
+       P -= (long long int)A[i]*(long long int)A[i];
+    }
+     
+    missingNumber = (S + P/S)/2;
+
+    repeating = missingNumber - S;
+
+    vector <int> ans;
+
+    ans.push_back(repeating);
+    ans.push_back(missingNumber);
+
+    return ans;
+}
+
+OPTIMAL APPROACH 2 : TC : O(5N) , SC : O(1)
+
+vector<int> Solution::repeatedNumber(const vector<int> &A) {
+    
+    int xor1;
+    int n = A.size();
+    int x = 0; // repeatingNumber
+    int y = 0; // missingNumber.
+    int set_bit_no;
+    
+    xor1 = A[0];
+    
+    // xor of all array element.
+    for(int i = 1 ; i < n;i++){
+        xor1 = xor1 ^ A[i];
+    }
+    
+    // xor of all natural numbers till n of previous xor res.
+    for(int i = 1 ; i <=n ;i++){
+        xor1 = xor1 ^ i;
+    }
+    
+    // get the right most set bit.
+    set_bit_no = xor1 & ~(xor1 - 1);
+    
+    // again iterate for array elements.
+    for(int i = 0 ; i<n;i++){
+        if(A[i] & set_bit_no){
+            
+            // if A[i] belongs to first set.
+            x = x ^ A[i];
+        }
+        else
+            y = y ^ A[i];
+    }
+    
+    // repeat again for n natural numbers
+    for(int i = 1 ; i<=n;i++){
+        if(i & set_bit_no){
+            
+            // if A[i] belongs to first set.
+            x = x ^ i;
+        }
+        else
+            y = y ^ i;
+    }
+    
+    int x_count = 0;
+    for(int i  = 0;i<n;i++){
+        if(A[i] == x)
+        x_count++;
+    }
+    
+    if(x_count == 0)
+    return {y,x};
+    
+    return {x,y};
+    
+    
+}
