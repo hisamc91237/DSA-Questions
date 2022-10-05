@@ -1,0 +1,33 @@
+Consider an array with N elements and value of all the elements is zero. We can perform following operations on the array.
+         1. Incremental operations: Choose 1 element from the array and increment its value by 1.
+         2. Doubling operation: Double the values of all the elements of array.
+Given an array arr[] of integers of size N. Print the smallest possible number of operations needed to change the original array containing only zeroes to arr[]
+
+Input:
+N = 3
+arr[] = {16, 16, 16}
+Output: 7
+Explanation: First apply an incremental 
+operation to each element. Then apply the 
+doubling operation four times. 
+Total number of operations is 3+4 = 7.
+
+APPROACH :
+
+class Solution{   
+public:
+    int countMinOperations(int arr[], int n) {
+              sort(arr , arr + n);
+              int ans=0;
+            while(true){
+            for(int i=n-1;i>=0;i--){
+                if (arr[i]%2==1){
+                arr[i]--;ans++;
+                }
+                arr[i]=arr[i]/2;
+            }
+          if(arr[n-1]==0)break;
+          ans++;
+        }
+        return ans;
+    }

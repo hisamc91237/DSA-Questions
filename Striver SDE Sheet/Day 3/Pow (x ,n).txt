@@ -1,0 +1,61 @@
+Implement pow(x, n), which calculates x raised to the power n (i.e., xn)
+
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+
+APPROACH 1 : TC : O(N) , TC : O(1)
+
+- Loop from 0 to n and calculate.
+
+CODE :
+
+#include<bits/stdc++.h>
+using namespace std;
+double myPow(double x, int n) {
+      double ans = 1.0;
+      for (int i = 0; i < n; i++) {
+        ans = ans * x;
+      }
+      return ans;
+}
+int main()
+{
+    cout<<myPow(2,10)<<endl;
+}
+
+
+APPROACH 2  : TC : O(logN) , SC : O(1)
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        double ans = 1.0;
+        
+        long long nn = n; // cope of n , in long long to avoid overflow.
+        
+        if(nn < 0) nn = -1 * nn; // make it positve by * -1..simple maths
+        
+        // whie nn > 0
+        while(nn){
+            
+            // odd case
+            if( nn % 2 ){
+                ans = ans * x;
+                nn = nn -1;
+            }
+            
+            // even case
+            else{
+                x = x * x;
+                nn = nn /2;
+            }
+        }
+        
+        // edge case
+        if(n < 0)
+           ans = double(1.0) / double(ans);
+        
+        return ans;
+    }
+};
+
