@@ -1,0 +1,78 @@
+Given an array nums of size n, return the majority element.
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+APPROACH 1 : TC : O(N2) , SC : O(1).
+- count of occuerce and check if it greater than n/2
+
+CODE :
+
+class Solution {
+    public int majorityElement(int[] nums) {
+        int majorityCount = nums.length/2;
+
+        for (int num : nums) {
+            int count = 0;
+            for (int elem : nums) {
+                if (elem == num) {
+                    count += 1;
+                }
+            }
+
+            if (count > majorityCount) {
+                return num;
+            }
+
+        }
+
+        return -1;    
+    }
+}
+
+APPROACH 2 : TC : O(NLogN)
+- Sorting
+
+CODE :
+
+ class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        
+        // sort the array
+        sort(nums.begin(),nums.end());
+        
+        int len = nums.size()/2;
+        return (nums[len]);
+    }
+};
+
+APPROACH 3 :
+- unordered  map of frequency and check if frequency is greater than n/2.
+
+APPROACH 4 : TC : O(N)
+- Moore Voting Algorithm.
+
+CODE :
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        
+        int count = 0;
+        int candidate = 0;
+        
+        // Basic Moore Voting Algo inside the looop.
+        for(auto num : nums){
+            if(count == 0)
+                candidate = num;
+            if(num == candidate)
+                count++;
+            else
+                count--;
+        }
+        
+        return candidate;
+    }
+};
