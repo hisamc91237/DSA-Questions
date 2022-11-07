@@ -1,0 +1,69 @@
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+
+APPROACH 1 : Tc : O(2N) , SC : O(1)
+
+ ListNode* d = head;
+
+        int cnt = 0;
+
+        while(d != NULL && d -> next != NULL){
+            d = d -> next;
+            cnt++;
+        }
+
+        int a = cnt - n;
+
+        // edge case
+        if(a < 0){
+           head = head -> next;
+           return head;
+        }
+
+        ListNode* slow = head;
+
+        for(int i = 0; i< a ;i++)
+         slow = slow -> next;
+
+         slow -> next = slow -> next -> next;
+
+         return head;
+
+
+APPROACH 2 : TC : O(N) , SC : O(1)
+
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        
+        // Step 1 :  Create a dummy Node
+        ListNode* start = new ListNode();
+        start -> next = head; // point start to head;
+        
+        // initialize fast and sloe at start
+        ListNode* fast = start;
+        ListNode* slow = start;
+        
+        // Step 2 : traverse fast till n 
+        for(int i = 1 ; i<=n;i++){
+            fast = fast -> next;
+        }
+        
+        // Step 3 : traverse fast till end of list
+        while(fast -> next != NULL){
+
+            // incremenet fast and slow both by one
+            fast = fast -> next;
+            slow = slow -> next;
+        }
+        
+        // break the connection and link
+        slow -> next = slow -> next -> next ;
+        
+        // return head {start -> next.. as it will handle edge case of if nth node is head}
+        return start -> next;
+        
+    }
+
