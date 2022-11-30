@@ -1,0 +1,64 @@
+Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. If the two linked lists have no intersection at all, return null.
+
+Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+Output: Intersected at '8'
+Explanation: The intersected node's value is 8 (note that this must not be 0 if the two lists intersect).
+From the head of A, it reads as [4,1,8,4,5]. From the head of B, it reads as [5,6,1,8,4,5]. There are 2 nodes before the intersected node in A; There are 3 nodes before the intersected node in B.
+- Note that the intersected node's value is not 1 because the nodes with value 1 in A and B (2nd node in A and 3rd node in B) are different node references. In other words, they point to two different locations in memory, while the nodes with value 8 in A and B (3rd node in A and 4th node in B) point to the same location in memory.
+
+APPROACH 1 : Brute Force... Time Complexity: O(m*n)
+
+node* intersectionPresent(node* head1,node* head2) {
+    while(head2 != NULL) {
+        node* temp = head1;
+        while(temp != NULL) {
+            //if both nodes are same
+            if(temp == head2) return head2;
+            temp = temp->next;
+        }
+        head2 = head2->next;
+    }
+    //intersection is not present between the lists return null
+    return NULL;
+}
+
+APPROACH 2 : Hashing .. TC : O(n+m) , SC : O(n)
+
+node* intersectionPresent(node* head1,node* head2) {
+     unordered_set<node*> st;
+    while(head1 != NULL) {
+       st.insert(head1);
+       head1 = head1->next;
+    }
+    while(head2 != NULL) {
+        if(st.find(head2) != st.end()) return head2;
+        head2 = head2->next;
+    }
+    return NULL;
+
+}
+
+APPROACh 3 : Time Complexity: O(2*max(length of list1,length of list2))
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        
+        // keep nodes at starting point
+        ListNode* a = headA;
+        ListNode* b = headB;
+
+        if(headA == NULL || headB == NULL) return NULL;
+
+        // while both nodes not met iterate
+        while(a != b){
+            
+            // if a == NULL .. keep a at headB else a ko aage.
+            a = a == NULL ? headB : a -> next;
+            b = b == NULL ? headA : b -> next;
+        }
+
+        return a;
+    }
+};
+

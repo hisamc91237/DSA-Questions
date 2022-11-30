@@ -1,0 +1,52 @@
+Given the head of a linked list, rotate the list to the right by k places.
+
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+
+APPROACH 1 : TC : O(n * k)
+
+node* rotateRight(node* head,int k) {
+    if(head == NULL||head->next == NULL) return head;
+    for(int i=0;i<k;i++) {
+        node* temp = head;
+        while(temp->next->next != NULL) temp = temp->next;
+        node* end = temp->next;
+        temp->next = NULL;
+        end->next = head;
+        head = end;
+    }
+    return head;
+}
+
+APPROACH 2 : TC :O(n)
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        
+        if(head == NULL || head -> next == NULL || k == 0) return head;
+
+        // Step 1 : Compute the length of the linked List
+        int len = 1;
+        ListNode* curr = head;
+        while(curr -> next != NULL){
+            len++;
+            curr = curr -> next;
+        }
+
+        // Step 2 : Minimize k
+        k = k % len;
+        k = len - k;
+
+        // Step 3 : Initalize curr to head..i.e make a circular LL
+        curr -> next = head;
+
+        // Step 4 : Move curr and make connections
+        while(k--) curr = curr -> next;
+
+        head = curr -> next ;
+        curr -> next = NULL;
+
+        return head;
+    }
+};

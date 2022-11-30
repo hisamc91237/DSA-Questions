@@ -1,0 +1,84 @@
+Given a grid of dimension nxm where each cell in the grid can have values 0, 1 or 2 which has the following meaning:
+0 : Empty cell
+1 : Cells have fresh oranges
+2 : Cells have rotten oranges
+
+We have to determine what is the minimum time required to rot all oranges. A rotten orange at index [i,j] can rot other fresh orange at indexes [i-1,j], [i+1,j], [i,j-1], [i,j+1] (up, down, left and right) in unit time. 
+ 
+
+Example 1:
+
+Input: grid = {{0,1,2},{0,1,2},{2,1,1}}
+Output: 1
+Explanation: The grid is-
+0 1 2
+0 1 2
+2 1 1
+Oranges at positions (0,2), (1,2), (2,0)
+will rot oranges at (0,1), (1,1), (2,2) and 
+(2,1) in unit time.
+
+APPROACH : 
+
+public:
+    //Function to find minimum time required to rot all oranges. 
+    int orangesRotting(vector<vector<int>>& grid) {
+       
+        //{{row,col},time} -> Queue
+        queue<pair<pair<int,int>,int>>q;
+
+            int srow=grid.size();
+            int scol=grid[0].size();
+            
+            // Copy of matrix to mark visited
+            vector<vector<int>>vis=grid;
+
+             for(int i=0;i<srow;i++){
+                 for(int j=0;j<scol;j++){
+                     if(grid[i][j]==2){
+                         q.push({{i,j},0});
+                   }
+                 }
+               }
+
+             int timee = 0; // to store the ans
+            
+            // Applying bfs
+            while(!q.empty()){
+                
+            auto row=q.front().first.first;
+            auto col=q.front().first.second;
+            int qtime=q.front().second;
+            q.pop();
+
+            timee=max(timee,qtime);
+            
+            // to move in 4 directions.
+            int delrow[]={-1,0,1,0};
+            int delcol[]={0,1,0,-1};
+
+            for(int i=0;i<4;i++){
+                int nrow=row+delrow[i];
+                int ncol=col+delcol[i];
+                
+                // condtions
+                if(nrow>=0 && nrow<srow && ncol>=0 && ncol<scol &&
+                grid[nrow][ncol]==1 && vis[nrow][ncol]!=2 ){
+                    vis[nrow][ncol]=2;
+                    q.push({{nrow,ncol},qtime+1});
+                }
+              }
+            }
+            
+            // check if rotten not possible
+            for(int i=0;i<srow;i++ )
+            {
+                for(int j=0;j<scol;j++)
+                {
+                    if(vis[i][j]==1){
+                        return -1;
+                    }
+                }
+            }
+            
+            return  timee;

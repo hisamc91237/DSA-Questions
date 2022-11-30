@@ -1,0 +1,51 @@
+Sample Input 1:
+2
+4 3
+1 2
+0 3
+2 3
+3 3
+0 1
+1 2
+2 0
+Sample Output 1:
+0 3
+1 2
+2 1 3
+3 0 2
+0 1 2
+1 0 2
+2 0 1
+
+
+APPRAOCH 1 :
+
+#include <bits/stdc++.h> 
+vector < vector < int >> printAdjacency(int n, int m, vector < vector < int >> & edges) {
+   
+    // vector to store neighbour nodes.
+    vector<int> ans[n];
+    
+    // to store adjancecy edges
+    for(int i=0;i<m;i++){
+        
+        int u = edges[i][0];
+        int v = edges[i][1];
+        
+        ans[u].push_back(v);
+        ans[v].push_back(u);
+    }
+    
+    vector< vector <int> > adj(n);
+    
+    for(int i=0;i<n;i++){
+        
+        adj[i].push_back(i);
+        
+        // entering neighbours nodes
+        for(int j = 0 ; j<ans[i].size();j++){
+            adj[i].push_back(ans[i][j]);
+        }
+    }
+    return adj;
+}

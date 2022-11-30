@@ -1,0 +1,64 @@
+Given arrival and departure times of all trains that reach a railway station. Find the minimum number of platforms required for the railway station so that no train is kept waiting.
+Consider that all the trains arrive on the same day and leave on the same day. Arrival and departure time can never be the same for a train but we can have arrival time of one train equal to departure time of the other. At any given instance of time, same platform can not be used for both departure of a train and arrival of another train. In such cases, we need different platforms.
+
+Example 1:
+
+Input: n = 6 
+arr[] = {0900, 0940, 0950, 1100, 1500, 1800}
+dep[] = {0910, 1200, 1120, 1130, 1900, 2000}
+Output: 3
+Explanation: 
+Minimum 3 platforms are required to 
+safely arrive and depart all trains.
+
+APPROACH 1 : TC : O(n2) , SC : O(1)
+
+int countPlatforms(int n,int arr[],int dep[])
+ {
+    int ans=1; //final value
+    for(int i=0;i<=n-1;i++)
+    {
+        int count=1; // count of overlapping interval of only this   iteration
+        for(int j=i+1;j<=n-1;j++)
+        {
+            if((arr[i]>=arr[j] && arr[i]<=dep[j]) ||
+           (arr[j]>=arr[i] && arr[j]<=dep[i]))
+           {
+               count++;
+           }
+        }
+        ans=max(ans,count); //updating the value
+    }
+    return ans;
+ }
+
+
+APPRPACH 2 : TC : O(nlongn) + O(n) , SC : O(1)
+
+class Solution{
+    public:
+    //Function to find the minimum number of platforms required at the
+    //railway station such that no train waits.
+    int findPlatform(int arr[], int dep[], int n)
+    {
+        //Step 1 : Sort both the arrays
+        sort(arr , arr + n);
+        sort(dep , dep + n);
+        
+        int platform_need = 1;
+        int result = 1;
+        int i = 1 , j = 0; // Two pointer approach
+        
+        while( i < n && j < n){
+            if(arr[i] <= dep[j]){ //arrival is smaller tha dep..plat is needed
+                platform_need++;
+                i++;
+            }
+            else if(arr[i] > dep[j]){ // train already gone..platform is freee
+                platform_need--;
+                j++;
+            }
+            result = max(result,platform_need); // res will store max of both
+        }
+        return result;
+    }

@@ -1,0 +1,61 @@
+Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+Input: head = [1,2,2,1]
+Output: true
+
+APPROACH 1 : By using vector... TC : o(n) , SC : O(n)
+
+bool isPalindrome(node* head) {
+    vector<int> arr;
+    while(head != NULL) {
+        arr.push_back(head->num);
+        head = head->next;
+    }
+    for(int i=0;i<arr.size()/2;i++) 
+        if(arr[i] != arr[arr.size()-i-1]) return false;
+    return true;
+}
+
+
+APPROACH 2 : TC : O(n)
+
+lass Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        
+        if(head == NULL || head -> next == NULL) return true;
+
+        // step 1 : Middle of LL (fast reached last or 2nd Last)
+        ListNode* slow = head , *fast = head;
+        while(fast -> next != NULL && fast -> next -> next != NULL){
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+
+        // Step 2 : Reverse from slow's next;
+        slow -> next = reverseList(slow -> next);
+
+        // step 3 : slow one step ahead for comparison
+        slow = slow -> next;
+
+        // Step 4 : Compare slow and head
+        while(slow != NULL){
+            if(head -> val  != slow -> val)
+                return false;
+            head = head -> next;
+            slow = slow -> next;
+        }
+            return true;
+    }
+
+    ListNode* reverseList(ListNode* head){
+        ListNode* pre = NULL , *next = NULL;
+
+        while(head != NULL){
+            next = head -> next;
+            head -> next = pre;
+            pre = head;
+            head = next;
+        }
+        return pre;
+    }

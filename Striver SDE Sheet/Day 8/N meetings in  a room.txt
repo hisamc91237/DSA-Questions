@@ -1,0 +1,68 @@
+There is one meeting room in a firm. There are N meetings in the form of (start[i], end[i]) where start[i] is start time of meeting i and end[i] is finish time of meeting i.
+What is the maximum number of meetings that can be accommodated in the meeting room when only one meeting can be held in the meeting room at a particular time?
+
+Note: Start time of one chosen meeting can't be equal to the end time of the other chosen meeting.
+
+Example 1:
+
+Input:
+N = 6
+start[] = {1,3,0,5,8,5}
+end[] =  {2,4,6,7,9,9}
+Output: 
+4
+Explanation:
+Maximum four meetings can be held with
+given start and end timings.
+The meetings are - (1, 2),(3, 4), (5,7) and (8,9)
+
+APPRPACH Tc : O(nlogn) , SC : O(n)
+
+class Solution
+{   
+    // A structure to store three paramters
+    struct meeting{
+        int end;
+        int pos;
+        int start;
+    };
+    public:
+    
+    // comparator function to compare acc to end time of meeting
+    bool static comparator(struct meeting m1 , meeting m2){
+        if(m1.end < m2.end) return true;
+        else if(m1.end > m2.end)return false;
+        else if(m1.pos < m2.pos) return true;
+        else return false;
+    }
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    int maxMeetings(int s[], int e[], int n)
+    {
+      struct meeting meet[n];
+      '
+      // fill in structure
+      for(int i=0;i<n;i++){
+          meet[i].start = s[i], meet[i].end = e[i],meet[i].pos = i + 1;
+      }
+      
+      // sort by the  ending time of meeeting
+      sort(meet , meet + n , comparator);
+      
+      vector<int> ans;
+      
+      // as first meeting will always take place
+      int limit = meet[0].end;
+      ans.push_back(meet[0].pos);
+      
+      for(int i =1;i<n;i++){
+          if(meet[i].start > limit){
+              limit = meet[i].end;
+              ans.push_back(meet[i].pos);
+          }
+      }
+      
+      // as outout required nu of meeting and not position..it depend on question
+      int res = ans.size();
+      return res;
+    }

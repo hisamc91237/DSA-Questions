@@ -1,0 +1,65 @@
+An image is represented by a 2-D array of integers, each integer representing the pixel value of the image.
+
+Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel value newColor, "flood fill" the image.
+
+To perform a "flood fill", consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same color as the starting pixel), and so on. Replace the color of all of the aforementioned pixels with the newColor.
+
+Example 1:
+
+Input: image = {{1,1,1},{1,1,0},{1,0,1}},
+sr = 1, sc = 1, newColor = 2.
+Output: {{2,2,2},{2,2,0},{2,0,1}}
+Explanation: From the center of the image 
+(with position (sr, sc) = (1, 1)), all 
+pixels connected by a path of the same color
+as the starting pixel are colored with the new 
+color.Note the bottom corner is not colored 2, 
+because it is not 4-directionally connected to 
+the starting pixel.
+
+APPROACH :
+
+TC : O(n x m)
+SC : O(n x m)
+
+Code;
+
+class Solution {
+private:
+    void dfs(int row,int col,vector<vector<int>>& ans,vector<vector<int>>& image,int newColor
+    ,int delrow[],int delCol[],int iniColor){
+        
+        // mark initial color as new
+        ans[row][col] = newColor;
+        
+        int n = image.size();
+        int m = image[0].size();
+        
+        // check in all neighbouring colors
+        for(int i=0;i<4;i++){ // till 4 as neighbour is in  4 direction
+            int nrow = row + delrow[i];
+            int nCol = col + delCol[i];
+            
+            // check  the condtions
+            if(nrow >= 0 && nrow < n && nCol >= 0 && nCol < m && ans[nrow][nCol] == iniColor && 
+            ans[nrow][nCol] != newColor){
+                dfs(nrow,nCol,ans,image,newColor,delrow,delCol,iniColor);
+            }
+        }
+    }
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        
+        // Copy the matrix
+        vector<vector<int>> ans = image;
+        
+        int iniColor = image[sr][sc]; // store initial color
+        
+        // to check in neighbouring colors.
+        int delrow[] = {-1, 0, +1,0};
+        int delCol[] = {0 ,+1, 0 , -1};
+        dfs(sr,sc,ans,image,newColor,delrow,delCol,iniColor);
+        
+        return ans;
+        
+    }
