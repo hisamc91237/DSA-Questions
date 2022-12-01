@@ -1,0 +1,51 @@
+Given a list arr of N integers, print sums of all subsets in it.
+
+Example 1:
+
+Input:
+N = 2
+arr[] = {2, 3}
+Output:
+0 2 3 5
+Explanation:
+When no elements is taken then Sum = 0.
+When only 2 is taken then Sum = 2.
+When only 3 is taken then Sum = 3.
+When element 2 and 3 are taken then 
+Sum = 2+3 = 5.
+
+APPROACH : TC : O(2^N) + O(2^NLog2^N) , SC : O(2^N)
+
+class Solution
+{
+public:
+
+    // Recursive Funtion
+    void helper(int ind,int sum ,vector<int> &arr,vector<int>&subset,int N){
+        
+        // base case
+        if(ind == N){
+            subset.push_back(sum);
+            return;
+        }
+        
+        // to pick the element to sum 
+        helper(ind + 1,sum + arr[ind],arr,subset,N);
+        
+        // Do not pick the element to sum
+        helper(ind + 1,sum,arr,subset,N);
+    }
+    
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // to store ans;
+        vector<int> subset;
+        helper(0,0,arr,subset,N);
+        
+        // sort the ans
+        sort(subset.begin(),subset.end());
+        
+        return subset;
+        
+        
+    }

@@ -1,0 +1,50 @@
+Given weights and values of N items, we need to put these items in a knapsack of capacity W to get the maximum total value in the knapsack.
+Note: Unlike 0/1 knapsack, you are allowed to break the item. 
+
+Example 1:
+
+Input:
+N = 3, W = 50
+values[] = {60,100,120}
+weight[] = {10,20,30}
+Output:
+240.00
+Explanation:Total maximum value of item
+we can have is 240.00 from the given
+capacity of sack.
+
+APPROACH : TC : O(nlogn) , SC : O(1)
+
+class Solution
+{
+    public:
+    
+    // comparator
+    bool static comp(Item a , Item b){
+        double r1 = (double)a.value/(double)a.weight;
+        double r2 = (double)b.value/(double)b.weight;
+        return r1 > r2;
+    }
+    //Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int W, Item arr[], int n)
+    {
+        
+        // Sort the knapsack by val / wt
+        sort(arr , arr + n,comp);
+        
+        int curWt = 0;
+        double finalScore = 0.0; // to store ans.
+        
+        for(int i =0;i<n;i++){
+            if(curWt + arr[i].weight <= W){
+                curWt += arr[i].weight;
+                finalScore += arr[i].value;
+            }
+            else{
+                int remain = W - curWt;
+                finalScore += (arr[i].value / (double)arr[i].weight) * (double)remain;
+                break;
+            }
+        }
+        return finalScore;
+    } 
