@@ -1,0 +1,67 @@
+Consider a rat placed at (0, 0) in a square matrix of order N * N. It has to reach the destination at (N - 1, N - 1). Find all possible paths that the rat can take to reach from source to destination. The directions in which the rat can move are 'U'(up), 'D'(down), 'L' (left), 'R' (right). Value 0 at a cell in the matrix represents that it is blocked and rat cannot move to it while value 1 at a cell in the matrix represents that rat can be travel through it.
+Note: In a path, no cell can be visited more than one time. If the source cell is 0, the rat cannot move to any other cell.
+
+Example 1:
+
+Input:
+N = 4
+m[][] = {{1, 0, 0, 0},
+         {1, 1, 0, 1}, 
+         {1, 1, 0, 0},
+         {0, 1, 1, 1}}
+Output:
+DDRDRR DRDDRR
+Explanation:
+The rat can reach the destination at 
+(3, 3) from (0, 0) by two paths - DRDDRR 
+and DDRDRR, when printed in sorted order 
+we get DDRDRR DRDDRR.
+
+APPROACH : TC : O(4 ^ mxn) , SC : O(mxn)
+
+class Solution{
+    public:
+    
+    // function for recursion
+    void solve(int i,int j,vector<string>&ans,string move,vector<vector<int>> &a
+    ,vector<vector<int>>&vis,int n,int deli[],int delj[]){
+        
+        // base case
+        if(i==n-1 && j==n-1){
+            ans.push_back(move);
+            return;
+        }
+        
+        // to store dir
+        string dir = "DLRU";
+        for(int ind=0;ind<4;ind++){
+            int newi = i + deli[ind];
+            int newj = j + delj[ind];
+            
+            if(newi>=0 && newi<n && newj >=0 && newj < n && !vis[newi][newj] 
+            && a[newi][newj] == 1){
+                
+                vis[i][j] = 1; // mark vis
+                solve(newi,newj,ans,move + dir[ind],a,vis,n,deli,delj);
+                vis[i][j] = 0; // backtrack
+            }
+        }
+    }
+    
+    vector<string> findPath(vector<vector<int>> &m, int n) {
+        
+        vector<string> ans;
+        
+        // visitefd array
+        vector<vector<int>> vis(n,vector<int>(n,0));
+        
+        // for 4 Directions
+        int deli[] = {1,0,0,-1};
+        int delj[] = {0,-1,1,0};
+        
+        // source should contain 1.
+        if(m[0][0] == 1)solve(0,0,ans,"",m,vis,n,deli,delj);
+        
+        return ans;
+    }
+};

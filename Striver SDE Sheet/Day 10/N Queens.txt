@@ -1,0 +1,63 @@
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+
+APPROACH : TC : O(N ! *N) , SC : O(N)
+
+class Solution {
+public:
+    void helper(int col ,vector<string> &board, vector<vector<string>> &ans,
+    vector<int> & leftRow, vector<int> &upperDiagonal,vector<int>&lowerDiagonal,int n){
+
+        // base case
+        if(col == n){
+            ans.push_back(board);
+            return;
+        }
+
+        // iterate for rows
+        for(int row = 0;row<n;row++){
+            if(leftRow[row] == 0 && upperDiagonal[n-1 + col - row] == 0 
+            && lowerDiagonal[row + col] == 0 ){
+
+                board[row][col] = 'Q';
+                leftRow[row] = 1;
+                lowerDiagonal[row + col] = 1;
+                upperDiagonal[n - 1 + col - row] = 1;
+                helper(col + 1,board,ans,leftRow,upperDiagonal,lowerDiagonal,n);
+
+                // backtrack
+                board[row][col] = '.';
+                leftRow[row] = 0;
+                lowerDiagonal[row + col] = 0;
+                upperDiagonal[n - 1 + col - row] = 0;
+                
+            }
+        }
+
+    }
+
+    vector<vector<string>> solveNQueens(int n) {
+        
+        // to store the ans
+        vector<vector<string>> ans;
+
+        vector<string>board(n);
+
+        string s(n,'.');
+        for(int i =0;i<n;i++){
+            board[i] = s;
+        }
+
+        // to check the thee directions ..ie {left,2 diagonals}
+        vector<int> leftRow(n,0) ,upperDiagonal(2 * n - 1, 0),lowerDiagonal(2 * n -1 , 0);
+        helper(0,board,ans,leftRow,upperDiagonal,lowerDiagonal,n);
+
+        return ans;
+    }
+};
+

@@ -1,0 +1,58 @@
+Given an adjacency list of a graph adj  of V no. of vertices having 0 based index. Check whether the graph is bipartite or not.
+
+Example 1:
+
+Input: 
+
+Output: 1
+Explanation: The given graph can be colored 
+in two colors so, it is a bipartite graph.
+
+AAPPROACH : 
+
+class Solution {
+private:
+    bool bfs(int start,vector<int>adj[],int color[],int V){
+        
+        // basic bfs
+        queue<int> q;
+        q.push(start);
+        
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            
+            for(auto it : adj[node]){
+                if(color[it] == -1){
+                    
+                    // if node has -1 ..make color of adjacent nodee opposite of current node
+                    color[it] = !color[node];
+                    q.push(it);
+                }
+                
+                // if both the adjacent node has same color this means it is not a bipartite.
+                else if(color[it] == color[node]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+public:
+	bool isBipartite(int V, vector<int>adj[]){
+	    
+	    // array to store color
+	    int color[V];
+	    
+	    // make all elements -1;
+	    for(int i=0;i<V;i++) color[i] = -1;
+	    
+	    // check for all components
+	    for(int i=0;i<V;i++){
+	        if(color[i] == -1){
+	        if(bfs(i,adj,color,V) == false) return false; 
+	        }
+	    }
+	    return true;
+	    
+	}
