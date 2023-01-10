@@ -14,7 +14,7 @@ would be 1 for all test cases.
 One possible Topological order for the
 graph is 3, 2, 1, 0.
 
-APPROACH : 
+APPROACH 1 : By using dfs 
 
 class Solution
 {
@@ -48,4 +48,44 @@ class Solution
 	        st.pop();
 	    }
 	    return ans;
+	}
+
+APPROACH 2 : By using bfs {KAHN'S ALGO}
+
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    int indegree[V] = {0};
+	    
+	    // getting the indegree
+	    for(int i=0;i<V;i++){
+	        for(auto it : adj[i]){
+	            indegree[it]++;
+	        }
+	    }
+	    
+	    // push the element in queue whose indegree is 0
+	    queue<int>q;
+	    for(int i=0;i<V;i++){
+	        if(indegree[i] == 0) q.push(i);
+	    }
+	    
+	    vector<int> topo;
+	    
+	    while(!q.empty()){
+	        int node = q.front();
+	        q.pop();
+	        
+	        topo.push_back(node);
+	        
+	        // decrement the indegree and push if it becomes 0
+	        for(auto i : adj[node]){
+	            indegree[i]--;
+	            if(indegree[i] == 0)q.push(i);
+	        }
+	    }
+	    return topo;
 	}

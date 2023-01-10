@@ -1,0 +1,41 @@
+class Solution {
+public:
+    
+    void mapping(vector<int> inorder ,map<int,int> &mp )
+    {
+     for(int i = 0 ; i < inorder.size() ; i++){
+         mp[inorder[i]] = i;
+     }   
+    }
+    
+    // helper function;
+    
+    TreeNode* helper(vector<int> preorder, vector<int> inorder ,
+                     int &index , int inors , int inore, map<int,int> &mp , int n){
+        
+        if(index >= n || inors > inore) return NULL;
+        
+        int element = preorder[index++];
+        TreeNode* root = new TreeNode(element);
+        
+        int position = mp[element];
+        
+        root -> left = helper(preorder , inorder , index , inors , position - 1 , mp , n);
+        root -> right = helper(preorder, inorder , index , position + 1 , inore ,mp , n);
+        
+        return root;
+        
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        
+        int preOrderIndex = 0;
+        int n = inorder.size();
+        
+        map<int , int>mp;
+        mapping(inorder , mp);
+        
+        TreeNode* root = helper(preorder,inorder ,preOrderIndex,0,n-1,mp,n);
+        
+        return root;
+    }
+};

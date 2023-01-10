@@ -1,0 +1,56 @@
+Given a n * m matrix grid where each element can either be 0 or 1. You need to find the shortest distance between a given source cell to a destination cell. The path can only be created out of a cell if its value is 1. 
+
+If the path is not possible between source cell and destination cell, then return -1.
+
+Note : You can move into an adjacent cell if that adjacent cell is filled with element 1. Two cells are adjacent if they share a side. In other words, you can move in one of the four directions, Up, Down, Left and Right
+
+APPROACH : 
+
+class Solution {
+  public:
+    int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
+                     pair<int, int> destination) {
+        
+        //{dist,{row,col}}
+        queue<pair<int,pair<int,int>>> q;
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        // distance array
+        vector<vector<int>> dist(n,vector<int>(m,1e9));
+        
+        dist[source.first][source.second] = 0;
+        q.push({0,{source.first,source.second}});
+        
+        int delrow[] = {-1,0,1,0};
+        int delcol[] = {0,1,0,-1};
+        
+        while(!q.empty()){
+            auto it = q.front();
+            int dis = it.first;
+            int row = it.second.first;
+            int col = it.second.second;
+            q.pop();
+            
+            // checking directions
+            for(int i=0;i<4;i++){
+                int newr = row + delrow[i];
+                int newc = col + delcol[i];
+                
+                // check validitiy and conditions.
+                if(newr >=0 && newr < n && newc >=0 && newc <m && grid[newr][newc] == 1 &&
+                dis + 1 < dist[newr][newc]){
+                    dist[newr][newc] = dis + 1;
+                    
+                    // check if destination reached
+                    if(newr == destination.first && newc == destination.second) return dis + 1;
+                    
+                    q.push({dis + 1,{newr,newc}});
+                }
+            }
+        }
+        // edge case
+        if(source.first == destination.first && source.second == destination.second) return 0;
+        
+        return -1; // as no path find
+    }

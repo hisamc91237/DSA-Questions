@@ -21,7 +21,7 @@ public:
             // resizing vector
             ans[i].resize(i + 1);
             
-            // element of first and last col will always be 0.
+            // element of first and last col will always be 1.
             ans[i][0] = ans[i][i] = 1;
             
             for(int j = 1 ; j < i ; j++)

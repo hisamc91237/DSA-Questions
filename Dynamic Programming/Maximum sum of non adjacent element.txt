@@ -1,0 +1,76 @@
+Recursion : 
+
+#include <bits/stdc++.h> 
+int f(int ind,vector<int> & nums){
+    // base case
+    if(ind == 0) return nums[ind];
+    if(ind < 0) return 0;
+    
+    int pick = nums[ind] + f(ind - 2,nums);
+    int notPick = 0  + f(ind-1,nums);
+    return max(pick,notPick);
+}
+int maximumNonAdjacentSum(vector<int> &nums){
+    int n = nums.size();
+    return f(n-1,nums);
+}
+
+Memoization : 
+
+#include <bits/stdc++.h> 
+int f(int ind,vector<int> & nums,vector<int> &dp){
+    // base case
+    if(ind == 0) return nums[ind];
+    if(ind < 0) return 0;
+    
+    // check for overalappping
+    if(dp[ind] != -1) return dp[ind];
+    
+    int pick = nums[ind] + f(ind - 2,nums,dp);
+    int notPick = 0  + f(ind-1,nums,dp);
+    return dp[ind] = max(pick,notPick);
+}
+int maximumNonAdjacentSum(vector<int> &nums){
+    int n = nums.size();
+    vector<int> dp(n,-1);
+    return f(n-1,nums,dp);
+}
+
+Tabulation : 
+
+int maximumNonAdjacentSum(vector<int> &nums){
+    int n = nums.size();
+    vector<int> dp(n,0);
+    dp[0] = nums[0];
+    
+    for(int i=1;i<n;i++){
+        int pick = nums[i];
+        if(i > 1) pick += dp[ i - 2];
+        int notPick = 0 + dp[i -1];
+        
+        dp[i] = max(pick,notPick);
+    }
+    return dp[n - 1];
+}
+
+Space : 
+
+#include <bits/stdc++.h> 
+
+int maximumNonAdjacentSum(vector<int> &nums){
+    int n = nums.size();
+    int prev = nums[0];
+    int prev2 = 0;
+    
+    for(int i=1;i<n;i++){
+        int pick = nums[i];
+        if(i > 1) pick += prev2;
+        int notPick = 0 + prev;
+        
+        int curri = max(pick,notPick);
+        prev2 = prev;
+        prev = curri;
+    }
+    return prev;
+}
+

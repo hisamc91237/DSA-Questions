@@ -1,0 +1,42 @@
+class Solution {
+public:
+    
+    void mapping(vector<int> inorder, map<int,int> &mp,int n){
+        for(int i = 0 ; i<n;i++) 
+            mp[inorder[i]] = i;
+        
+    }
+    
+    TreeNode* helper(vector<int> inorder, vector<int> postorder , int &index ,int inords
+                     , int inorde , map<int,int> &mp , int n ){
+        
+        //base case
+        if(index < 0 || inords > inorde) return NULL;
+        
+        int element = postorder[index--];
+        
+        TreeNode* root = new TreeNode(element);
+        
+        int position = mp[element];
+        
+        root -> right = helper(inorder , postorder, index , position + 1 ,inorde , mp,n);
+        
+        root -> left  = helper(inorder,postorder , index , inords , position -1 ,mp,n );
+        
+        return root;
+    }
+    
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        
+        int n = inorder.size();
+        int postorderIndex = n -1;
+        map<int ,int> mp;
+        mapping(inorder , mp , n);
+        
+        TreeNode* root = helper(inorder , postorder , postorderIndex , 0 , n -1 ,mp, n);
+        
+        return root;
+        
+        
+    }
+};

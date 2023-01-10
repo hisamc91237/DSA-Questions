@@ -1,0 +1,56 @@
+Given the root of a binary tree, return the preorder traversal of its nodes' values.
+
+Example 1:
+
+Input: root = [1,null,2,3]
+Output: [1,2,3]
+
+APPROACH 1 : Recursion
+
+class Solution {
+public:
+
+    void pre(TreeNode* root,vector<int> &ans){
+
+        // base case
+        if(root == NULL) return;
+
+        ans.push_back(root -> val);
+        pre(root -> left,ans);
+        pre(root -> right,ans);
+    }
+    vector<int> preorderTraversal(TreeNode* root) {
+        
+        vector<int> preOrder;
+        pre(root , preOrder);
+        return preOrder;
+
+    }
+};
+
+APPROACH 2 : 
+
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        
+        stack<TreeNode*>st;
+        
+        vector<int> ans;
+        if(root == NULL) return ans;
+        st.push(root);
+
+        while(!st.empty()){
+            root = st.top();
+            st.pop();
+            ans.push_back(root -> val);
+
+            if(root -> right != NULL){
+                st.push(root -> right);
+            }
+            if(root -> left != NULL){
+                st.push(root -> left);
+            }
+        }
+        return ans;
+    }

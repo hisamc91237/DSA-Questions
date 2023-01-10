@@ -1,0 +1,83 @@
+INOORDER : 
+
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> inorder;
+
+        TreeNode* curr = root;
+
+        while(curr != NULL){
+
+            // Case 1 : 
+                if(curr -> left == NULL){
+                    inorder.push_back(curr -> val);
+                    curr = curr -> right;
+                }
+            // Case 2 : 
+
+                // find the rightmost guy
+                else{
+                    TreeNode* prev = curr -> left;
+                    while(prev -> right && prev -> right != curr) 
+                        prev = prev -> right; 
+
+                    // Make a thred to curr which is pointing to root.
+                    if(prev -> right == NULL){
+                        prev -> right = curr;
+                        curr = curr -> left;
+                    }
+                    else{
+
+                        // break  the thread
+                        prev->right = NULL;
+                        inorder.push_back(curr -> val);
+                        curr = curr -> right;
+                    }
+                }    
+        }
+        return inorder;
+    }
+};
+
+POSTORDER : 
+
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> inorder;
+
+        TreeNode* curr = root;
+
+        while(curr != NULL){
+
+            // Case 1 : 
+                if(curr -> left == NULL){
+                    inorder.push_back(curr -> val);
+                    curr = curr -> right;
+                }
+            // Case 2 : 
+
+                // find the rightmost guy
+                else{
+                    TreeNode* prev = curr -> left;
+                    while(prev -> right && prev -> right != curr) 
+                        prev = prev -> right; 
+
+                    // Make a thred to curr which is pointing to root.
+                    if(prev -> right == NULL){
+                        prev -> right = curr;
+			inorder.push_back(curr -> val);
+                        curr = curr -> left;
+                    }
+                    else{
+
+                        // break  the thread
+                        prev->right = NULL;
+                        curr = curr -> right;
+                    }
+                }    
+        }
+        return inorder;
+    }
+};
